@@ -1,0 +1,53 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  reports   Report[]
+}
+
+model Report {
+  id                String    @id
+  userId            String?
+  user              User?     @relation(fields: [userId], references: [id])
+  profileType       String // 'instagram' | 'dating' | 'linkedin' | 'whatsapp'
+  screenshotUrl     String
+  overallScore      Int
+  attractiveness    Int
+  trustworthiness   Int
+  bioQuality        Int
+  visualConsistency Int
+  firstImpression   String[] // PostgreSQL native string array
+  roast             String
+  originalBio       String
+  bioRewrite        String
+  redFlags          String[]
+  greenFlags        String[]
+  photoRanking      Json // Store PhotoRank array as JSON
+  glowUpPlan        String[]
+  isUnlocked        Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  payments          Payment[]
+}
+
+model Payment {
+  id                String   @id @default(uuid())
+  reportId          String
+  report            Report   @relation(fields: [reportId], references: [id])
+  amount            Int
+  status            String // 'pending' | 'completed' | 'failed'
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+  createdAt         DateTime @default(now())
+}
