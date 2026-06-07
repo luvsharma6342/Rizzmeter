@@ -161,6 +161,55 @@
         "Diversify your content beyond just event photos; share glimpses of your hobbies, thoughts, or daily life to build a connection.",
         "Engage with other profiles and content regularly to boost visibility and connect with your niche."
       ]
+    },
+    "rep_04at758qq": {
+      "id": "rep_04at758qq",
+      "profileType": "instagram",
+      "screenshotUrl": "https://db3w3hv3yu3l0.cloudfront.net/uploads/1780804337037-42ussh.png",
+      "isUnlocked": true,
+      "overallScore": 82,
+      "firstImpression": [
+        "Actually quite aesthetic, feels genuine",
+        "Color grading is on point",
+        "Low-key gatekeeping your camera presets"
+      ],
+      "attractiveness": 84,
+      "attractiveness_label": "Attractive",
+      "trustworthiness": 80,
+      "bioQuality": 70,
+      "visualConsistency": 92,
+      "roast": "Okay, we get it, you know how to use Lightroom. Every post is color-coded to look like a Wes Anderson film. It's beautiful, sure, but it also feels slightly clinical, like a boutique hotel website. Are you a human or an Instagram theme curation algorithm? Show us a photo where you're eating a messy taco and looking a bit goofy.",
+      "originalBio": "visuals & coffee • ☕️🍰 • cofe & chill",
+      "bioRewrite": "☕️ Drinking overpriced lattes for the visual aesthetic.\n📸 Pretending to know how to adjust camera aperture.\n🎨 Curation index: 100/100.",
+      "redFlags": [
+        "Zero photos of you smiling with teeth",
+        "Every caption is a single lowercase word or a cryptic emoji",
+        "Too many pictures of coffee cups and zero pictures of your actual personality"
+      ],
+      "greenFlags": [
+        "Incredible visual palette and layout composition",
+        "Very high aesthetic appeal, profile feels premium",
+        "Nice highlights organization"
+      ],
+      "photoRanking": [
+        {
+          "index": 1,
+          "score": 90,
+          "review": "The portrait looking sideways at a bookstore. Feels very cinematic.",
+          "action": "Keep this prominent. Perfect color grading."
+        },
+        {
+          "index": 2,
+          "score": 78,
+          "review": "Flatlay of coffee and a book. Looks like a stock photo.",
+          "action": "Put a bit of yourself in these frames. Let your hands or outfit show."
+        }
+      ],
+      "glowUpPlan": [
+        "Inject some personality. Add a reel or post showing your funny side, not just static models.",
+        "Capitalize letters in your bio, it shows you don't fear grammar rules.",
+        "Do a photo dump of candid, unedited snaps. It builds trust and makes you approachable."
+      ]
     }
   },
   "leaderboard": [

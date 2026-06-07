@@ -26,6 +26,9 @@ export default function ReportPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Total slides available: 8
+  const TOTAL_SLIDES = 8;
+
   // Slideshow control
   const [activeSlide, setActiveSlide] = useState(0);
   const [copiedBio, setCopiedBio] = useState(false);
@@ -54,6 +57,19 @@ export default function ReportPage() {
       fetchReport();
     }
   }, [id]);
+
+  // Keyboard navigation for slides
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        setActiveSlide((prev) => Math.max(0, prev - 1));
+      } else if (e.key === "ArrowRight") {
+        setActiveSlide((prev) => Math.min(TOTAL_SLIDES - 1, prev + 1));
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // Score Count-Up effect
   useEffect(() => {
@@ -216,9 +232,6 @@ export default function ReportPage() {
       </div>
     );
   }
-
-  // Total slides available: 8
-  const TOTAL_SLIDES = 8;
 
   const slides = [
     // Slide 0: Score & Teaser
@@ -528,7 +541,7 @@ export default function ReportPage() {
       </div>
 
       {/* Wrapped Slide container card */}
-      <div className="w-full max-w-lg bg-[#0f172a]/40 backdrop-blur-xl border border-white/5 rounded-3xl p-6 md:p-8 flex flex-col h-[520px] shadow-2xl relative z-10 overflow-hidden">
+      <div className="w-full max-w-lg bg-[#0f172a]/40 backdrop-blur-xl border border-white/5 rounded-3xl p-6 md:p-8 flex flex-col min-h-[640px] shadow-2xl relative z-10 overflow-hidden">
         {/* Top Slide Line progress */}
         <div className="flex gap-1.5 mb-6">
           {slides.map((_, idx) => (
