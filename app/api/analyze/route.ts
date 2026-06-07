@@ -153,11 +153,53 @@ You MUST output a valid JSON object matching this schema exactly. Do not wrap it
     // Add a simulated AI processing lag (2.0 seconds) to give premium UX vibe
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const mockReport = generateMockReport(profileType || "instagram", reportId);
-    mockReport.screenshotUrl = url; // preserve original image
+    const mockReport = generateMockReport(
+      profileType || "instagram",
+      reportId
+    );
 
-    // Save report in local JSON DB so the client can retrieve it by ID later
+    mockReport.screenshotUrl = url;
+
+    // Local save
     saveReportLocal(mockReport);
+
+    // ALSO save to Prisma
+    if (process.env.DATABASE_URL) {
+      try {
+        const { prisma } = await import("../../../lib/prisma");
+
+        await prisma.report.create({
+          data: {
+            id: mockReport.id,
+            profileType: mockReport.profileType,
+            screenshotUrl: mockReport.screenshotUrl,
+            overallScore: mockReport.overallScore,
+            attractiveness: mockReport.attractiveness,
+            trustworthiness: mockReport.trustworthiness,
+            bioQuality: mockReport.bioQuality,
+            visualConsistency: mockReport.visualConsistency,
+            firstImpression: mockReport.firstImpression,
+            roast: mockReport.roast,
+            originalBio: mockReport.originalBio,
+            bioRewrite: mockReport.bioRewrite,
+            redFlags: mockReport.redFlags,
+            greenFlags: mockReport.greenFlags,
+            photoRanking: JSON.stringify(mockReport.photoRanking),
+            glowUpPlan: mockReport.glowUpPlan,
+            isUnlocked: true
+          }
+        });
+
+        console.log(
+          `Mock report ${mockReport.id} saved in Neon database.`
+        );
+      } catch (dbErr: any) {
+        console.error(
+          "Failed to save mock report to Prisma:",
+          dbErr
+        );
+      }
+    }
 
     return NextResponse.json(mockReport);
 

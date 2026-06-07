@@ -210,6 +210,114 @@
         "Capitalize letters in your bio, it shows you don't fear grammar rules.",
         "Do a photo dump of candid, unedited snaps. It builds trust and makes you approachable."
       ]
+    },
+    "rep_ucmnd9qc4": {
+      "id": "rep_ucmnd9qc4",
+      "profileType": "instagram",
+      "screenshotUrl": "https://db3w3hv3yu3l0.cloudfront.net/uploads/1780816339321-fah4mh.png",
+      "isUnlocked": true,
+      "overallScore": 68,
+      "firstImpression": [
+        "Trying way too hard to look like an influencer",
+        "Feed is 90% mirror selfies and gym checks",
+        "Gives 'I respond to DMs after 3 business days' energy"
+      ],
+      "attractiveness": 75,
+      "trustworthiness": 55,
+      "bioQuality": 40,
+      "visualConsistency": 80,
+      "roast": "Bro, your feed looks like a Pinterest board for 'generic urban teenager'. You've got the obligatory sunset photo, the blurry night-out shot where everyone looks like a cryptid, and the gym selfie that scream 'validate my biceps please'. Your follower-to-following ratio is fighting for its life, and your highlights cover covers are doing the absolute most to look aesthetic while saying absolutely nothing.",
+      "originalBio": "Just a local guy doing local things. 📍 Delhi. DM for collabs.",
+      "bioRewrite": "🏋️‍♂️ 70% gym, 30% trying to find where I parked my car.\n🍕 Professional pizza critic & sunset watcher.\n📬 Hit me up for bad puns and questionable advice.",
+      "redFlags": [
+        "Using the '📍' emoji for a city everyone already knows you live in",
+        "No group photos where you actually look happy",
+        "Follower ratio is exactly 1.1:1"
+      ],
+      "greenFlags": [
+        "High resolution images (you didn't take these on a toaster)",
+        "Vibrant colors in the highlight reels",
+        "You actually look like you bathe regularly"
+      ],
+      "photoRanking": [
+        {
+          "index": 1,
+          "score": 85,
+          "review": "The outdoor golden hour shot. Good lighting, solid angles.",
+          "action": "Make this your primary profile photo."
+        },
+        {
+          "index": 2,
+          "score": 62,
+          "review": "The blurry bathroom mirror selfie. Flashes in the mirror are so 2018.",
+          "action": "Crop out the bathroom sink or replace with an active shot."
+        },
+        {
+          "index": 3,
+          "score": 70,
+          "review": "The group picture at the cafe. You look okay but your friend is outshining you.",
+          "action": "Blur the background slightly so you remain the focus."
+        }
+      ],
+      "glowUpPlan": [
+        "Purge the mirror selfies. Get a friend to take candid portraits in natural light.",
+        "Fix your highlights grid. Make them match a consistent, warm-toned color scheme.",
+        "Rewrite that dry bio. 'DM for collabs' works only if you have 10k+ followers, otherwise it's just comedy."
+      ]
+    },
+    "rep_l7q99h3ww": {
+      "id": "rep_l7q99h3ww",
+      "profileType": "instagram",
+      "screenshotUrl": "https://db3w3hv3yu3l0.cloudfront.net/uploads/1780836875465-q30eer.jpg",
+      "isUnlocked": true,
+      "overallScore": 35,
+      "firstImpression": [
+        "Mysterious, kinda?",
+        "Still figuring out the Insta game.",
+        "Needs more posts than my grandma has teeth."
+      ],
+      "attractiveness": 40,
+      "trustworthiness": 30,
+      "bioQuality": 25,
+      "visualConsistency": 40,
+      "roast": "Aakankshi, bestie, what's going on? Your profile is giving 'witness protection program' meets 'I just learned how to use Instagram stories.' Two posts? Even my pet rock has more content. And 'blessed mess'? Girl, are you blessed or just messy? Pick a lane! We can't even see your face, so your pfp is giving 'I accidentally turned on my front camera.' You're literally following more people than you have actual posts. It's giving low-key stalker, high-key enigma. Time to drop the mic and actually *post* something where we can see you!",
+      "originalBio": "blessed mess ✨",
+      "bioRewrite": "✨ Vibes are on 'chaos mode,' but in a cute way.\n💅 Manifesting good hair days & iced coffee.\n📍 Currently collecting memes & questionable life choices.\nDM if you can handle the blessed mess.",
+      "redFlags": [
+        "Private account with barely any content – why even bother?",
+        "Face is hidden in almost every visible photo, giving 'who dis?' energy.",
+        "Only two posts total, suggesting low effort or ghosting."
+      ],
+      "greenFlags": [
+        "The dark aesthetic in the grid posts has potential for a cohesive vibe.",
+        "You actually have a profile picture (even if it's faceless).",
+        "The outfits in the visible posts are pretty cute and have a distinct style."
+      ],
+      "photoRanking": [
+        {
+          "index": 1,
+          "score": 40,
+          "review": "It's giving 'I don't want to be recognized,' which is fine, but it's also your main impression, bestie. The black dress is cute, though.",
+          "action": "Change to a pic where we can actually see your face, or at least your eyes. Let us connect, queen!"
+        },
+        {
+          "index": 2,
+          "score": 60,
+          "review": "This shot is actually pretty aesthetic! The blue outfit, the night vibe, the palm trees – it's a whole mood. You look chill.",
+          "action": "More of this! Maybe one where your face isn't 200 feet away or obscured by nightfall. The pose is good."
+        },
+        {
+          "index": 3,
+          "score": 45,
+          "review": "Another mirror selfie, another face-obscuring phone. The embroidered outfit is gorgeous, though, serving cultural vibes!",
+          "action": "Girl, put the phone down for one pic! Or at least angle it so we can see you. Show off that gorgeous fit *and* your gorgeous face."
+        }
+      ],
+      "glowUpPlan": [
+        "Post at least 5-7 more photos where your face is clearly visible – let us see you shine!",
+        "Change your bio to something unique and less generic than 'blessed mess' – unleash your true personality!",
+        "Start creating themed highlights for your interests (food, travel, pets, etc.) to show off your personality beyond just grid posts."
+      ]
     }
   },
   "leaderboard": [

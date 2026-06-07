@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getReportLocal, unlockReportLocal } from "../../../../utils/localDb";
+import dotenv from "dotenv"
+
+dotenv.config();
 
 export async function GET(
   req: NextRequest,
@@ -21,8 +24,8 @@ export async function GET(
             ...report,
             isUnlocked: true,
             // Prisma will return Json type directly, but if not, parse it
-            photoRanking: typeof report.photoRanking === "string" 
-              ? JSON.parse(report.photoRanking) 
+            photoRanking: typeof report.photoRanking === "string"
+              ? JSON.parse(report.photoRanking)
               : report.photoRanking
           };
           return NextResponse.json(formattedReport);
@@ -81,7 +84,7 @@ export async function POST(
 
       // 2. Unlock in local JSON DB to ensure consistency
       const unlockedLocal = unlockReportLocal(id);
-      
+
       if (!reportData) {
         reportData = unlockedLocal;
       }
