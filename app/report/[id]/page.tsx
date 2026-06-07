@@ -106,6 +106,107 @@ export default function ReportPage() {
     }
   };
 
+  // ── Share helpers ────────────────────────────────────────────────────────────
+
+  /** Re-draws the share card into a Blob (PNG) without triggering a download. */
+  const generateShareCardBlob = (): Promise<Blob> =>
+    new Promise((resolve, reject) => {
+      if (!report) return reject(new Error("No report"));
+      const canvas = document.createElement("canvas");
+      canvas.width = 1080;
+      canvas.height = 1920;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return reject(new Error("No canvas context"));
+
+      const grad = ctx.createLinearGradient(0, 0, 0, 1920);
+      grad.addColorStop(0, "#020617");
+      grad.addColorStop(0.5, "#0f172a");
+      grad.addColorStop(1, "#020617");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 1080, 1920);
+
+      ctx.fillStyle = "rgba(124,58,237,0.12)";
+      ctx.beginPath(); ctx.arc(150, 300, 350, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "rgba(236,72,153,0.12)";
+      ctx.beginPath(); ctx.arc(900, 1600, 450, 0, Math.PI * 2); ctx.fill();
+
+      ctx.fillStyle = "#ffffff"; ctx.font = "bold 48px sans-serif"; ctx.textAlign = "center";
+      ctx.fillText("rizzmeter", 540, 160);
+      ctx.font = "bold 64px sans-serif"; ctx.fillText("PROFILE SCORECARD", 540, 270);
+      ctx.fillStyle = "#a78bfa"; ctx.font = "bold 36px sans-serif";
+      ctx.fillText(`${report.profileType.toUpperCase()} REVIEW`, 540, 340);
+
+      ctx.fillStyle = "rgba(15,23,42,0.7)";
+      ctx.beginPath(); ctx.arc(540, 680, 200, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = "#ec4899"; ctx.lineWidth = 14; ctx.stroke();
+      ctx.fillStyle = "#ffffff"; ctx.font = "bold 120px sans-serif";
+      ctx.fillText(report.overallScore.toString(), 540, 700);
+      ctx.fillStyle = "#94a3b8"; ctx.font = "bold 32px sans-serif";
+      ctx.fillText("/ 100", 540, 770);
+
+      ctx.fillStyle = "rgba(255,255,255,0.04)";
+      ctx.fillRect(140, 950, 800, 420);
+      ctx.strokeStyle = "rgba(255,255,255,0.08)"; ctx.strokeRect(140, 950, 800, 420);
+      ctx.textAlign = "left";
+      ctx.fillStyle = "#06b6d4"; ctx.font = "bold 32px sans-serif";
+      ctx.fillText("⭐ TOP STRENGTH", 190, 1020);
+      ctx.fillStyle = "#f8fafc"; ctx.font = "normal 28px sans-serif";
+      ctx.fillText(report.greenFlags[0] || "Looks very approachable", 190, 1070);
+      ctx.fillStyle = "#f43f5e"; ctx.font = "bold 32px sans-serif";
+      ctx.fillText("🚨 BIGGEST RED FLAG", 190, 1180);
+      ctx.fillStyle = "#f8fafc"; ctx.font = "normal 28px sans-serif";
+      const rfText = report.redFlags[0] || "Bio looks too basic";
+      ctx.fillText(rfText.length > 50 ? rfText.slice(0, 50) + "…" : rfText, 190, 1230);
+      ctx.textAlign = "center"; ctx.fillStyle = "#94a3b8"; ctx.font = "bold 30px sans-serif";
+      ctx.fillText("Compare and Roast Your Profile at rizzmeter.com", 540, 1750);
+
+      canvas.toBlob((blob) => {
+        if (blob) resolve(blob);
+        else reject(new Error("toBlob failed"));
+      }, "image/png");
+    });
+
+  const reportUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/report/${id}`
+      : `https://rizzmeter.com/report/${id}`;
+
+  const handleShareWhatsApp = () => {
+    const text =
+      `🔥 I just got my profile roasted by Rizzmeter!\n\n` +
+      `My rizz score: *${report?.overallScore ?? "??"}/100*\n\n` +
+      `Check yours 👉 ${reportUrl}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+  };
+
+  const handleShareWithFile = async (platform: "instagram" | "snapchat") => {
+    try {
+      const blob = await generateShareCardBlob();
+      const file = new File([blob], "rizzmeter_score.png", { type: "image/png" });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: "My Rizzmeter Score",
+          text: `My rizz score: ${report?.overallScore ?? "??"}/100 🔥 Check yours at ${reportUrl}`,
+        });
+      } else {
+        // Desktop fallback: download image + copy link
+        const objUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = objUrl; a.download = "rizzmeter_score.png"; a.click();
+        URL.revokeObjectURL(objUrl);
+        await navigator.clipboard.writeText(reportUrl);
+        alert(
+          platform === "instagram"
+            ? "Image downloaded! Open Instagram Stories, pick the image, and paste the link. (Link copied to clipboard)"
+            : "Image downloaded! Open Snapchat, attach the image, and paste the link. (Link copied to clipboard)"
+        );
+      }
+    } catch (err: any) {
+      if (err?.name !== "AbortError") console.error("Share error:", err);
+    }
+  };
+
   // Viral Share Card Builder
   const handleDownloadShareCard = () => {
     if (!report) return;
@@ -155,7 +256,7 @@ export default function ReportPage() {
     ctx.beginPath();
     ctx.arc(540, 680, 200, 0, Math.PI * 2);
     ctx.fill();
-    
+
     ctx.strokeStyle = "#ec4899";
     ctx.lineWidth = 14;
     ctx.stroke();
@@ -326,7 +427,7 @@ export default function ReportPage() {
       content: (
         <div className="flex flex-col justify-center flex-1 py-4 text-center relative">
           <div className="absolute top-[-5%] left-[10%] w-[120px] h-[120px] bg-red-900/10 rounded-full blur-2xl pointer-events-none" />
-          
+
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-red-950/30 border border-red-900/40 rounded-full text-xs font-extrabold text-rose-500 mb-6 mx-auto animate-pulse">
             <Flame className="w-3.5 h-3.5 fill-current" /> Warning: Unfiltered Roast
           </div>
@@ -375,7 +476,7 @@ export default function ReportPage() {
       content: (
         <div className="flex flex-col justify-center flex-1 py-4 space-y-4">
           <h3 className="text-xl font-black text-center">Original vs rewritten bio</h3>
-          
+
           <div className="space-y-3">
             {/* Original */}
             <div className="p-4 rounded-xl bg-slate-950/40 border border-slate-800 text-left">
@@ -391,7 +492,7 @@ export default function ReportPage() {
               <p className="text-xs text-slate-200 font-medium whitespace-pre-line leading-relaxed">
                 {report.bioRewrite}
               </p>
-              
+
               <button
                 onClick={handleCopyBio}
                 className="absolute top-4 right-4 p-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-brand-purple text-slate-400 hover:text-white transition-colors"
@@ -473,7 +574,7 @@ export default function ReportPage() {
         <div className="flex flex-col justify-center flex-1 py-4 items-center text-center">
           <h3 className="text-xl font-black mb-1">Make them jealous.</h3>
           <p className="text-slate-400 text-[10px] mb-6">Download a premium Instagram Stories format card showing your rating.</p>
-          
+
           {/* Card Mock Preview */}
           <div className="w-full max-w-[210px] aspect-[9/16] rounded-2xl p-4 bg-gradient-to-b from-[#020617] via-[#0f172a] to-[#020617] border border-white/10 flex flex-col justify-between shadow-2xl relative mb-6">
             <div className="absolute top-[-5%] left-[-5%] w-[80px] h-[80px] bg-purple-900/10 rounded-full blur-xl pointer-events-none" />
@@ -547,9 +648,8 @@ export default function ReportPage() {
           {slides.map((_, idx) => (
             <div
               key={idx}
-              className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                idx === activeSlide ? "bg-brand-pink" : idx < activeSlide ? "bg-brand-purple" : "bg-slate-800"
-              }`}
+              className={`h-1 flex-1 rounded-full transition-all duration-300 ${idx === activeSlide ? "bg-brand-pink" : idx < activeSlide ? "bg-brand-purple" : "bg-slate-800"
+                }`}
             />
           ))}
         </div>
@@ -598,6 +698,59 @@ export default function ReportPage() {
       <p className="text-[10px] text-slate-500 font-medium mt-4">
         Tip: Tap arrows or use your keyboard navigation keys to step through your Wrapped report.
       </p>
+
+      {/* ── Social Share Buttons ───────────────────────────────────────────── */}
+      <div className="flex flex-col items-center gap-3 mt-5">
+        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+          Share your score
+        </p>
+        <div className="flex flex-wrap justify-center items-center gap-2">
+
+          {/* WhatsApp */}
+          <button
+            id="share-whatsapp"
+            onClick={handleShareWhatsApp}
+            title="Share on WhatsApp"
+            className="group flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-full bg-[#075e54]/20 border border-[#25d366]/30 hover:bg-[#25d366]/20 hover:border-[#25d366]/60 transition-all duration-200 text-[#25d366] text-xs font-bold shadow-sm hover:shadow-[0_0_12px_rgba(37,211,102,0.2)]"
+          >
+            {/* WhatsApp SVG */}
+            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            WhatsApp
+          </button>
+
+          {/* Instagram */}
+          <button
+            id="share-instagram"
+            onClick={() => handleShareWithFile("instagram")}
+            title="Share on Instagram"
+            className="group flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-full bg-gradient-to-r from-purple-900/20 via-pink-900/20 to-orange-900/20 border border-pink-600/30 hover:border-pink-500/60 hover:from-purple-800/25 hover:via-pink-800/25 hover:to-orange-800/25 transition-all duration-200 text-pink-400 text-xs font-bold shadow-sm hover:shadow-[0_0_12px_rgba(236,72,153,0.2)]"
+          >
+            {/* Instagram SVG */}
+            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+            </svg>
+            Instagram
+          </button>
+
+          {/* Snapchat */}
+          <button
+            id="share-snapchat"
+            onClick={() => handleShareWithFile("snapchat")}
+            title="Share on Snapchat"
+            className="group flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-full bg-yellow-500/10 border border-yellow-400/30 hover:bg-yellow-400/20 hover:border-yellow-400/60 transition-all duration-200 text-yellow-400 text-xs font-bold shadow-sm hover:shadow-[0_0_12px_rgba(250,204,21,0.2)]"
+          >
+            {/* Snapchat SVG */}
+            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.3 4.209l-.036.36c-.009.093.072.187.18.196.048.004.1 0 .15-.01.26-.064.54-.16.8-.16.59 0 1.12.468 1.12 1.06 0 .37-.2.7-.535.907-.85.526-1.29.807-1.29 1.133 0 .42.49 1.4 1.03 2.11.53.7 1.28 1.42 2.29 1.52.13.013.24.11.24.24 0 .38-.91 1.06-2.84 1.37-.05.007-.1.08-.1.18v.02c.03.14.07.3.07.44 0 .44-.35.77-.74.77-.27 0-.56-.11-.86-.33-.25-.19-.5-.29-.75-.29-.27 0-.53.11-.77.32-.91.82-1.95 1.24-3.01 1.24-1.06 0-2.1-.42-3.01-1.24-.24-.21-.5-.32-.77-.32-.25 0-.5.1-.75.29-.3.22-.59.33-.86.33-.39 0-.74-.33-.74-.77 0-.14.04-.3.07-.44v-.02c0-.1-.05-.173-.1-.18C2.91 17.77 2 17.09 2 16.71c0-.13.11-.227.24-.24 1.01-.1 1.76-.82 2.29-1.52.54-.71 1.03-1.69 1.03-2.11 0-.326-.44-.607-1.29-1.133C3.94 11.5 3.74 11.17 3.74 10.8c0-.592.53-1.06 1.12-1.06.26 0 .54.096.8.16.05.01.102.014.15.01.108-.009.189-.103.18-.196l-.036-.36c-.103-.99-.229-3.016.3-4.209C7.859 1.069 11.216.793 12.206.793"/>
+            </svg>
+            Snapchat
+          </button>
+
+        </div>
+      </div>
+
     </div>
   );
 }

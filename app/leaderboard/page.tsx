@@ -124,12 +124,12 @@ export default function LeaderboardPage() {
         </div>
 
         {/* Tab Filters */}
-        <div className="flex gap-2 justify-center mb-8 border-b border-white/5 pb-6">
+        <div className="flex flex-wrap gap-2 justify-center mb-8 border-b border-white/5 pb-6">
           {["all", "instagram", "dating", "linkedin", "whatsapp"].map((filter) => (
             <button
               key={filter}
               onClick={() => setPlatformFilter(filter)}
-              className={`px-4 py-2 rounded-full text-xs font-bold transition-all border ${
+              className={`px-3 sm:px-4 py-2 rounded-full text-xs font-bold transition-all border ${
                 platformFilter === filter
                   ? "bg-slate-900 border-brand-purple text-white shadow-md shadow-purple-500/5"
                   : "bg-slate-950/20 border-slate-800/80 text-slate-400 hover:text-slate-200"
