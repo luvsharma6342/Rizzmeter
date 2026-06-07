@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Report } from "@prisma/client"
 import { getLeaderboardLocal } from "../../../utils/localDb";
 
 export async function GET(req: NextRequest) {
@@ -7,19 +8,19 @@ export async function GET(req: NextRequest) {
     if (process.env.DATABASE_URL) {
       try {
         const { prisma } = await import("../../../lib/prisma");
-        const topReports = await prisma.report.findMany({
+        const topReports: Report[] = await prisma.report.findMany({
           orderBy: { overallScore: "desc" },
           take: 10
         });
 
         if (topReports.length > 0) {
-          const mappedLeaderboard = topReports.map((report, index) => {
+          const mappedLeaderboard = topReports.map((report: Report, index: number) => {
             // Generate deterministic mock usernames and avatars based on report ID
             const charCodeSum = report.id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
             const adjs = ["Sleek", "Chill", "Hyper", "Vibrant", "Cool", "Alpha", "Aesthetic", "Dapper"];
             const nouns = ["Coder", "Influencer", "Hustler", "Explorer", "Nomad", "Designer", "Creator"];
             const username = `${adjs[charCodeSum % adjs.length]}_${nouns[(charCodeSum + index) % nouns.length]}`;
-            
+
             const genders = ["men", "women"];
             const avatarId = charCodeSum % 99;
             const avatarUrl = `https://randomuser.me/api/portraits/${genders[charCodeSum % 2]}/${avatarId}.jpg`;
