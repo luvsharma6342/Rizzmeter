@@ -12,7 +12,9 @@ import {
   ArrowRight,
   Trophy,
   Star,
-  Users
+  Users,
+  X,
+  Menu
 } from "lucide-react";
 
 // Inline SVG Icons for brand compatibility
@@ -57,12 +59,21 @@ interface LogMessage {
 }
 
 export default function LandingPage() {
+
   const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const scrollToRoaster = () => {
+    const el = document.getElementById("roaster");
+    el?.scrollIntoView({ behavior: "smooth" });
+    setIsMenuOpen(false);
+  };
+
   const [platform, setPlatform] = useState<PlatformType>("instagram");
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
-  
+
   // Scanning / analysis states
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [logs, setLogs] = useState<LogMessage[]>([]);
@@ -136,7 +147,7 @@ export default function LandingPage() {
     }
     setError(null);
     setFile(selectedFile);
-    
+
     // Create preview
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -193,7 +204,7 @@ export default function LandingPage() {
 
       addLog("Requesting Vision LLM feedback (GPT-4o API)...", "info");
       addLog("Critiquing bios, scanning layouts, ranking facial expressions...", "info");
-      
+
       const analyzeRes = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -225,7 +236,7 @@ export default function LandingPage() {
       <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-pink-900/10 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Header */}
-      <header className="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between z-10 border-b border-white/5 bg-slate-950/20 backdrop-blur-md sticky top-0">
+      {/* <header className="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between z-10 border-b border-white/5 bg-slate-950/20 backdrop-blur-md sticky top-0">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push("/")}>
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-purple to-brand-pink flex items-center justify-center shadow-lg shadow-purple-500/20">
             <Flame className="w-6 h-6 text-white" />
@@ -252,7 +263,118 @@ export default function LandingPage() {
         >
           Roast Now <ArrowRight className="w-4 h-4" />
         </button>
+      </header> */}
+
+      <header className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between z-50 border-b border-white/5 bg-slate-950/20 backdrop-blur-md sticky top-0">
+        {/* Logo */}
+        <div
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => router.push("/")}
+        >
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-purple to-brand-pink flex items-center justify-center shadow-lg shadow-purple-500/20">
+            <Flame className="w-6 h-6 text-white" />
+          </div>
+
+          <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+            rizz<span className="text-brand-pink">meter</span>
+          </span>
+        </div>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-400">
+          <a
+            href="#roaster"
+            className="hover:text-white transition-colors"
+          >
+            Roast Me
+          </a>
+
+          <a
+            href="/leaderboard"
+            className="hover:text-white transition-colors flex items-center gap-1.5"
+          >
+            <Trophy className="w-4 h-4 text-yellow-500" />
+            Leaderboard
+          </a>
+
+          <a
+            href="/challenge"
+            className="hover:text-white transition-colors flex items-center gap-1.5"
+          >
+            <Sparkles className="w-4 h-4 text-brand-cyan" />
+            AI Challenge
+          </a>
+        </nav>
+
+        {/* Desktop CTA */}
+        <button
+          onClick={scrollToRoaster}
+          className="hidden md:flex px-5 py-2.5 rounded-full bg-gradient-to-r from-brand-purple to-brand-pink text-white font-bold text-sm hover:opacity-90 transition-all items-center gap-2 shadow-lg shadow-purple-500/20"
+        >
+          Roast Now
+          <ArrowRight className="w-4 h-4" />
+        </button>
+
+        {/* Mobile Hamburger */}
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="md:hidden text-white p-2"
+        >
+          {isMenuOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
+        </button>
       </header>
+
+      {/* Mobile Menu */}
+      <div
+        className={`md:hidden fixed top-[73px] left-0 right-0 z-40 transition-all duration-300 ${isMenuOpen
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-4 pointer-events-none"
+          }`}
+      >
+        <div className="mx-4 mt-2 rounded-2xl border border-white/10 bg-slate-950/95 backdrop-blur-xl shadow-2xl overflow-hidden">
+          <nav className="flex flex-col">
+            <a
+              href="#roaster"
+              onClick={scrollToRoaster}
+              className="px-6 py-4 text-white hover:bg-white/5 transition-colors"
+            >
+              Roast Me
+            </a>
+
+            <a
+              href="/leaderboard"
+              onClick={() => setIsMenuOpen(false)}
+              className="px-6 py-4 text-white hover:bg-white/5 transition-colors flex items-center gap-3"
+            >
+              <Trophy className="w-5 h-5 text-yellow-500" />
+              Leaderboard
+            </a>
+
+            <a
+              href="/challenge"
+              onClick={() => setIsMenuOpen(false)}
+              className="px-6 py-4 text-white hover:bg-white/5 transition-colors flex items-center gap-3"
+            >
+              <Sparkles className="w-5 h-5 text-brand-cyan" />
+              AI Challenge
+            </a>
+
+            <div className="p-4 border-t border-white/10">
+              <button
+                onClick={scrollToRoaster}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-brand-purple to-brand-pink text-white font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all"
+              >
+                Roast Now
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </nav>
+        </div>
+      </div>
 
       {/* Hero Section */}
       <section className="max-w-6xl mx-auto px-6 pt-16 pb-20 text-center flex flex-col items-center z-10">
@@ -306,11 +428,10 @@ export default function LandingPage() {
                       <button
                         key={p.id}
                         onClick={() => setPlatform(p.id as PlatformType)}
-                        className={`flex flex-col items-center justify-center py-4 px-3 rounded-2xl border transition-all ${
-                          isSelected
+                        className={`flex flex-col items-center justify-center py-4 px-3 rounded-2xl border transition-all ${isSelected
                             ? "bg-slate-900 border-brand-purple shadow-md shadow-purple-500/10 text-white"
                             : "bg-slate-950/40 border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700"
-                        }`}
+                          }`}
                       >
                         <Icon className={`w-6 h-6 mb-2 ${isSelected ? "text-brand-purple" : ""}`} />
                         <span className="text-xs font-bold">{p.name}</span>
@@ -332,11 +453,10 @@ export default function LandingPage() {
                 onDragLeave={() => setIsDragOver(false)}
                 onDrop={onDrop}
                 onClick={handleUploadClick}
-                className={`border-2 border-dashed rounded-2xl py-12 px-6 text-center cursor-pointer transition-all flex flex-col items-center ${
-                  isDragOver
+                className={`border-2 border-dashed rounded-2xl py-12 px-6 text-center cursor-pointer transition-all flex flex-col items-center ${isDragOver
                     ? "border-brand-purple bg-purple-500/5 scale-[0.99]"
                     : "border-slate-800 bg-slate-950/20 hover:border-slate-700 hover:bg-slate-900/10"
-                }`}
+                  }`}
               >
                 <input
                   type="file"
@@ -490,7 +610,7 @@ export default function LandingPage() {
           </div>
 
           <div className="mt-12">
-            <button 
+            <button
               onClick={() => {
                 const el = document.getElementById("roaster");
                 el?.scrollIntoView({ behavior: "smooth" });
