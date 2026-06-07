@@ -9,10 +9,8 @@ import {
   Flame,
   Sparkles,
   MessageSquare,
-  Globe,
   ArrowRight,
   Trophy,
-  Check,
   Star,
   Users
 } from "lucide-react";
@@ -442,87 +440,65 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Pricing / Value Grid */}
+      {/* Free Features Grid */}
       <section className="bg-slate-950/60 border-t border-b border-white/5 py-24 z-10">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-5xl font-black mb-4">Unlocking is cheap. Staying roasted is forever.</h2>
+          <h2 className="text-3xl md:text-5xl font-black mb-4">100% Free. Unlimited Glow-Ups.</h2>
           <p className="text-slate-400 max-w-xl mx-auto mb-16 text-sm">
-            Get an instant free teaser score. Unlock full breakdown slides, photo ranking points, custom rewritten bios, and the dynamic viral share card.
+            Get comprehensive audits, full breakdown slides, photo rankings, optimized bio rewrites, and the viral scorecard - completely free.
           </p>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-            {/* Plan 1 */}
-            <div className="glass-panel rounded-2xl p-8 flex flex-col justify-between border border-slate-800 hover:border-brand-purple/40 transition-all text-left">
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {/* Card 1: AI Roast & Scores */}
+            <div className="glass-panel rounded-2xl p-6 border border-slate-800 hover:border-brand-purple/40 transition-all text-left flex flex-col justify-between">
               <div>
-                <h3 className="text-lg font-bold text-white mb-2">Single Roast Report</h3>
-                <p className="text-slate-400 text-xs mb-6">Perfect to optimize one profile and share scores.</p>
-                <div className="flex items-baseline gap-2 mb-6">
-                  <span className="text-4xl font-extrabold text-white">₹199</span>
-                  <span className="text-slate-500 text-xs">/one-off report</span>
+                <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-brand-purple/20 flex items-center justify-center mb-4 text-brand-purple">
+                  <Flame className="w-5 h-5 fill-current" />
                 </div>
-                <ul className="flex flex-col gap-3 text-xs text-slate-300">
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-brand-cyan" /> Complete 8-slide AI review
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-brand-cyan" /> Attractiveness & Trust ratings
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-brand-cyan" /> Original vs Rewrite bio editor
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-brand-cyan" /> High-res dynamic Share Card
-                  </li>
-                </ul>
+                <h3 className="text-base font-bold text-white mb-2">Unfiltered AI Roast</h3>
+                <p className="text-slate-400 text-xs leading-relaxed">
+                  Get a brutal, hilarious, and honest critique of your profile's overall aesthetic, vibe, and Gen-Z rating score.
+                </p>
               </div>
-              <button 
-                onClick={() => {
-                  const el = document.getElementById("roaster");
-                  el?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="w-full py-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-brand-purple hover:bg-brand-purple/10 text-white font-bold text-xs mt-8 transition-all"
-              >
-                Upload to Start
-              </button>
             </div>
 
-            {/* Plan 2 */}
-            <div className="glass-panel rounded-2xl p-8 flex flex-col justify-between border border-brand-pink/50 bg-gradient-to-b from-brand-pink/5 to-slate-950/20 text-left relative">
-              <div className="absolute top-4 right-4 bg-brand-pink text-white font-bold text-[9px] uppercase px-2 py-0.5 rounded-full tracking-wider">
-                Popular
-              </div>
+            {/* Card 2: Photo Rankings */}
+            <div className="glass-panel rounded-2xl p-6 border border-slate-800 hover:border-brand-pink/40 transition-all text-left flex flex-col justify-between">
               <div>
-                <h3 className="text-lg font-bold text-white mb-2">Unlimited Pass</h3>
-                <p className="text-slate-400 text-xs mb-6">Keep optimizing your profile pictures until you reach 95+.</p>
-                <div className="flex items-baseline gap-2 mb-6">
-                  <span className="text-4xl font-extrabold text-white">₹499</span>
-                  <span className="text-slate-500 text-xs">/lifetime access</span>
+                <div className="w-10 h-10 rounded-xl bg-pink-500/10 border border-brand-pink/20 flex items-center justify-center mb-4 text-brand-pink">
+                  <Star className="w-5 h-5 fill-current" />
                 </div>
-                <ul className="flex flex-col gap-3 text-xs text-slate-300">
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-brand-pink" /> Unlimited profile uploads
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-brand-pink" /> 1-on-1 AI optimization loop
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-brand-pink" /> Compare profiles on Leaderboard
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-brand-pink" /> Premium creator badge
-                  </li>
-                </ul>
+                <h3 className="text-base font-bold text-white mb-2">Photo Rankings</h3>
+                <p className="text-slate-400 text-xs leading-relaxed">
+                  Evaluate individual photos and panels. Learn which ones boost your matches and which ones need to be swapped out immediately.
+                </p>
               </div>
-              <button 
-                onClick={() => {
-                  const el = document.getElementById("roaster");
-                  el?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-purple to-brand-pink hover:opacity-90 text-white font-bold text-xs mt-8 transition-all"
-              >
-                Get Lifetime Pass
-              </button>
             </div>
+
+            {/* Card 3: Bio Rewrite */}
+            <div className="glass-panel rounded-2xl p-6 border border-slate-800 hover:border-brand-cyan/40 transition-all text-left flex flex-col justify-between">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-brand-cyan/20 flex items-center justify-center mb-4 text-brand-cyan">
+                  <Sparkles className="w-5 h-5 fill-current" />
+                </div>
+                <h3 className="text-base font-bold text-white mb-2">Gen-Z Bio Rewrites</h3>
+                <p className="text-slate-400 text-xs leading-relaxed">
+                  Ditch dry summaries and corporate buzzwords. Get funny, emoji-rich, and optimized copy for your target audience.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12">
+            <button 
+              onClick={() => {
+                const el = document.getElementById("roaster");
+                el?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="px-8 py-4 rounded-xl bg-gradient-to-r from-brand-purple to-brand-pink text-white font-extrabold text-sm shadow-lg shadow-purple-500/20 active:scale-[0.98] transition-all"
+            >
+              Start Your Free Audit
+            </button>
           </div>
         </div>
       </section>

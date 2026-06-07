@@ -107,6 +107,60 @@
         "Upgrade your profile picture to something more dynamic, charismatic, or genuinely funny. Let your smile shine!",
         "Curate your highlight covers for a consistent aesthetic or clear storytelling. Use bold, clear images or custom graphics instead of random shots."
       ]
+    },
+    "rep_remd9xqk6": {
+      "id": "rep_remd9xqk6",
+      "profileType": "instagram",
+      "screenshotUrl": "https://db3w3hv3yu3l0.cloudfront.net/uploads/1780779346490-bwgfdg.png",
+      "isUnlocked": true,
+      "overallScore": 50,
+      "firstImpression": [
+        "Low-key student vibe.",
+        "Bio needs a serious glow-up.",
+        "Highlight covers are a missed opportunity."
+      ],
+      "attractiveness": 60,
+      "trustworthiness": 85,
+      "bioQuality": 20,
+      "visualConsistency": 40,
+      "roast": "Alright, Luv, let's get real. Your profile is giving 'I just finished my homework and remembered I have an Instagram' vibes. That bio? It's drier than my throat after a silent laugh. We get it, you're an MCA student from Galgotias, but where's the *sauce*? Your highlight covers look like they're still loading. It’s not giving 'main character energy,' it’s giving 'background extra.' Time to level up, fam, because right now, you’re just serving facts and no fun.",
+      "originalBio": "Greater Noida\nluv_sharma3\nMCA\n#galgotiasuniversity | Ex-Invertian\nohnomyluv",
+      "bioRewrite": "📍 Greater Noida, living my best (caffeinated) life\n🧠 MCA student, turning screen time into success\n🎓 #GalgotiasUniversity alumni | Ex-Invertian (it was a phase)\n✨ On a mission to collect good vibes & epic memories\n🎶 Warning: May spontaneously break into Garba moves",
+      "redFlags": [
+        "Bio is purely factual, no personality shines through.",
+        "Highlight covers lack aesthetic appeal and cohesion.",
+        "Profile gives off a slightly generic 'student' rather than a unique individual vibe."
+      ],
+      "greenFlags": [
+        "Clear, friendly profile picture showing your face.",
+        "Highlights demonstrate a variety of interests and social life.",
+        "Consistent username across the main handle and bio."
+      ],
+      "photoRanking": [
+        {
+          "index": 0,
+          "score": 65,
+          "review": "Your main DP is clear and you're looking directly at the camera, which is a good start. But it's giving 'school photo day' energy – a bit stiff and formal. We need more *oomph*.",
+          "action": "Swap this for a more candid shot where you're genuinely smiling or doing something you love. Let that personality pop!"
+        },
+        {
+          "index": 1,
+          "score": 50,
+          "review": "The 'Gym' highlight cover is a decent idea, showing you're active, but the pic quality and composition are a bit blurry and unflattering. It's not inspiring me to hit the weights with you.",
+          "action": "Next time you're at the gym, get a friend to snap a well-lit, dynamic photo of you mid-workout or flexing proudly. Make it a flex, literally!"
+        },
+        {
+          "index": 2,
+          "score": 75,
+          "review": "Now this 'Garba Night' highlight cover? This is where the magic is! It shows personality, cultural engagement, and a good time. This is what we like to see!",
+          "action": "Keep this vibe! Consider making the cover even clearer or more vibrant to really draw people in. More Garba, less dry bio!"
+        }
+      ],
+      "glowUpPlan": [
+        "Invest in better highlight cover aesthetics; use consistent filters or a uniform design style for a polished look.",
+        "Diversify your content beyond just event photos; share glimpses of your hobbies, thoughts, or daily life to build a connection.",
+        "Engage with other profiles and content regularly to boost visibility and connect with your niche."
+      ]
     }
   },
   "leaderboard": [

@@ -19,6 +19,7 @@ export async function GET(
           // Parse JSON properties if they returned as strings or cast them
           const formattedReport = {
             ...report,
+            isUnlocked: true,
             // Prisma will return Json type directly, but if not, parse it
             photoRanking: typeof report.photoRanking === "string" 
               ? JSON.parse(report.photoRanking) 
@@ -36,6 +37,7 @@ export async function GET(
     if (!report) {
       return NextResponse.json({ error: "Report not found" }, { status: 404 });
     }
+    report.isUnlocked = true;
 
     return NextResponse.json(report);
   } catch (error: any) {

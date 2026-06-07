@@ -262,7 +262,7 @@ export function generateMockReport(
     id: id || `rep_${Math.random().toString(36).substr(2, 9)}`,
     profileType: type,
     screenshotUrl: `/placeholder_${type}.png`,
-    isUnlocked: false, // Default is locked teaser
+    isUnlocked: true, // Default is unlocked in free version
     ...template
   };
 }

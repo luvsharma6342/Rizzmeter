@@ -8,15 +8,11 @@ import {
   ArrowLeft,
   ArrowRight,
   Sparkles,
-  Lock,
   Download,
   AlertTriangle,
   CheckCircle,
   Copy,
-  ChevronRight,
   TrendingUp,
-  Share2,
-  DollarSign,
   AlertCircle
 } from "lucide-react";
 import Confetti from "../../../components/Confetti";
@@ -34,12 +30,6 @@ export default function ReportPage() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [copiedBio, setCopiedBio] = useState(false);
   const [confettiActive, setConfettiActive] = useState(false);
-
-  // Payment popup state
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [paymentLoading, setPaymentLoading] = useState(false);
-  const [billingEmail, setBillingEmail] = useState("");
-  const [selectedPlan, setSelectedPlan] = useState<"single" | "lifetime">("single");
 
   // Dynamic counter for the score gauge
   const [displayedScore, setDisplayedScore] = useState(0);
@@ -97,40 +87,6 @@ export default function ReportPage() {
       navigator.clipboard.writeText(report.bioRewrite);
       setCopiedBio(true);
       setTimeout(() => setCopiedBio(false), 2000);
-    }
-  };
-
-  // Mock Payment Flow
-  const handleUnlockReport = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!billingEmail) return;
-
-    setPaymentLoading(true);
-    // Simulate gateway delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    try {
-      const res = await fetch(`/api/report/${id}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "unlock", email: billingEmail, plan: selectedPlan })
-      });
-
-      if (!res.ok) {
-        throw new Error("Unlock transaction failed.");
-      }
-
-      // Success
-      const data = await res.json();
-      setReport(data.report);
-      setShowPaymentModal(false);
-      setConfettiActive(true);
-      // Advance to next slide to reveal the content
-      setActiveSlide(1);
-    } catch (err: any) {
-      alert(err.message || "Payment verification failed.");
-    } finally {
-      setPaymentLoading(false);
     }
   };
 
@@ -574,18 +530,16 @@ export default function ReportPage() {
       {/* Wrapped Slide container card */}
       <div className="w-full max-w-lg bg-[#0f172a]/40 backdrop-blur-xl border border-white/5 rounded-3xl p-6 md:p-8 flex flex-col h-[520px] shadow-2xl relative z-10 overflow-hidden">
         {/* Top Slide Line progress */}
-        {report.isUnlocked && (
-          <div className="flex gap-1.5 mb-6">
-            {slides.map((_, idx) => (
-              <div
-                key={idx}
-                className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                  idx === activeSlide ? "bg-brand-pink" : idx < activeSlide ? "bg-brand-purple" : "bg-slate-800"
-                }`}
-              />
-            ))}
-          </div>
-        )}
+        <div className="flex gap-1.5 mb-6">
+          {slides.map((_, idx) => (
+            <div
+              key={idx}
+              className={`h-1 flex-1 rounded-full transition-all duration-300 ${
+                idx === activeSlide ? "bg-brand-pink" : idx < activeSlide ? "bg-brand-purple" : "bg-slate-800"
+              }`}
+            />
+          ))}
+        </div>
 
         {/* Slide contents with transition animation */}
         <div className="flex flex-col flex-1 relative">
@@ -598,188 +552,39 @@ export default function ReportPage() {
               transition={{ duration: 0.3 }}
               className="flex flex-col flex-1"
             >
-              {report.isUnlocked || activeSlide === 0 ? (
-                slides[activeSlide].content
-              ) : (
-                /* Blurry Teaser block for locked content */
-                <div className="flex flex-col items-center justify-center flex-1 text-center py-10 blur-xs select-none">
-                  <Lock className="w-12 h-12 text-slate-500 mb-4" />
-                  <p className="text-sm text-slate-400">Locked teaser content</p>
-                </div>
-              )}
+              {slides[activeSlide].content}
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* Locked paywall interface overlay */}
-        {!report.isUnlocked && (
-          <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md flex flex-col items-center justify-center text-center p-6 z-20">
-            <div className="w-14 h-14 rounded-full bg-slate-900 border border-brand-purple flex items-center justify-center mb-4">
-              <Lock className="w-6 h-6 text-brand-purple" />
-            </div>
-            
-            <h3 className="text-xl font-black mb-2">Want to see your roasts & tips?</h3>
-            <p className="text-slate-400 text-xs max-w-sm mb-6 leading-relaxed">
-              Unlock the other 7 Spotify Wrapped-style slides including Photo Ranks, Red Flags, AI Roast paragraph, Bio rewritten and custom Story share card.
-            </p>
-
-            <div className="flex gap-3 w-full max-w-xs mb-4">
-              <div 
-                onClick={() => setSelectedPlan("single")}
-                className={`flex-1 border rounded-xl p-3 cursor-pointer text-left transition-all ${
-                  selectedPlan === "single" 
-                    ? "border-brand-purple bg-purple-500/5" 
-                    : "border-slate-800 bg-slate-900/20 hover:border-slate-700"
-                }`}
-              >
-                <span className="block text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">This Report</span>
-                <span className="text-base font-extrabold text-white">₹199</span>
-              </div>
-              <div 
-                onClick={() => setSelectedPlan("lifetime")}
-                className={`flex-1 border rounded-xl p-3 cursor-pointer text-left transition-all ${
-                  selectedPlan === "lifetime" 
-                    ? "border-brand-pink bg-pink-500/5" 
-                    : "border-slate-800 bg-slate-900/20 hover:border-slate-700"
-                }`}
-              >
-                <span className="block text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">Lifetime Pass</span>
-                <span className="text-base font-extrabold text-white">₹499</span>
-              </div>
-            </div>
-
-            <button
-              onClick={() => setShowPaymentModal(true)}
-              className="w-full max-w-xs py-3.5 rounded-xl bg-gradient-to-r from-brand-purple to-brand-pink text-white font-extrabold text-xs shadow-lg shadow-purple-500/20 active:scale-[0.98] transition-all"
-            >
-              Unlock Report Slides Now
-            </button>
-            <p className="text-[10px] text-slate-500 font-medium mt-3">Fully secured transaction. Instant refund on dissatisfaction.</p>
-          </div>
-        )}
-
         {/* Footer controls for unlocked slides */}
-        {report.isUnlocked && (
-          <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
-            <button
-              onClick={() => setActiveSlide((prev) => Math.max(0, prev - 1))}
-              disabled={activeSlide === 0}
-              className={`p-2 rounded-xl border border-slate-800 text-slate-400 hover:text-white transition-colors disabled:opacity-40`}
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </button>
+        <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
+          <button
+            onClick={() => setActiveSlide((prev) => Math.max(0, prev - 1))}
+            disabled={activeSlide === 0}
+            className={`p-2 rounded-xl border border-slate-800 text-slate-400 hover:text-white transition-colors disabled:opacity-40`}
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
 
-            <span className="text-xs font-bold text-slate-500 tracking-wider">
-              {slides[activeSlide].title} ({activeSlide + 1}/{TOTAL_SLIDES})
-            </span>
+          <span className="text-xs font-bold text-slate-500 tracking-wider">
+            {slides[activeSlide].title} ({activeSlide + 1}/{TOTAL_SLIDES})
+          </span>
 
-            <button
-              onClick={() => setActiveSlide((prev) => Math.min(TOTAL_SLIDES - 1, prev + 1))}
-              disabled={activeSlide === TOTAL_SLIDES - 1}
-              className={`p-2 rounded-xl border border-slate-800 text-slate-400 hover:text-white transition-colors disabled:opacity-40`}
-            >
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        )}
+          <button
+            onClick={() => setActiveSlide((prev) => Math.min(TOTAL_SLIDES - 1, prev + 1))}
+            disabled={activeSlide === TOTAL_SLIDES - 1}
+            className={`p-2 rounded-xl border border-slate-800 text-slate-400 hover:text-white transition-colors disabled:opacity-40`}
+          >
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* Slide Navigation Hints */}
-      {report.isUnlocked && (
-        <p className="text-[10px] text-slate-500 font-medium mt-4">
-          Tip: Tap arrows or use your keyboard navigation keys to step through your Wrapped report.
-        </p>
-      )}
-
-      {/* Mock Payment Gateway Modal Popup */}
-      {showPaymentModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-6 z-50 backdrop-blur-sm">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden"
-          >
-            {/* Modal branding header */}
-            <div className="flex items-center gap-2 mb-6 border-b border-slate-800 pb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-purple to-brand-pink flex items-center justify-center">
-                <Flame className="w-5 h-5 text-white" />
-              </div>
-              <span className="font-extrabold text-sm tracking-tight">
-                rizz<span className="text-brand-pink">meter</span> Secure Checkout
-              </span>
-            </div>
-
-            <form onSubmit={handleUnlockReport} className="space-y-4">
-              <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-500 tracking-wider mb-1.5">
-                  Billing Email Address
-                </label>
-                <input
-                  type="email"
-                  required
-                  placeholder="enter.your.email@gmail.com"
-                  value={billingEmail}
-                  onChange={(e) => setBillingEmail(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 focus:border-brand-purple rounded-xl px-4 py-3 text-xs text-white focus:outline-none transition-colors"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[10px] uppercase font-bold text-slate-500 tracking-wider mb-1.5">
-                  Selected Package
-                </label>
-                <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between">
-                  <div className="text-left">
-                    <span className="block text-xs font-bold text-white">
-                      {selectedPlan === "single" ? "Single Profile Audit" : "Unlimited Lifetime Pass"}
-                    </span>
-                    <span className="text-[10px] text-slate-500">Includes secure cloud report storage</span>
-                  </div>
-                  <span className="text-base font-black text-brand-pink">
-                    {selectedPlan === "single" ? "₹199" : "₹499"}
-                  </span>
-                </div>
-              </div>
-
-              {/* Simulated details grid */}
-              <div className="p-3 bg-slate-950/40 border border-slate-800/50 rounded-xl text-[10px] text-slate-500 space-y-1.5 font-mono">
-                <div className="flex justify-between">
-                  <span>Subtotal:</span>
-                  <span>{selectedPlan === "single" ? "₹199.00" : "₹499.00"}</span>
-                </div>
-                <div className="flex justify-between text-brand-cyan">
-                  <span>Mock Integration active:</span>
-                  <span>FREE testing mode</span>
-                </div>
-              </div>
-
-              <div className="flex gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowPaymentModal(false)}
-                  className="flex-1 py-3 border border-slate-800 hover:border-slate-700 rounded-xl text-slate-400 hover:text-white font-bold text-xs transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={paymentLoading}
-                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-brand-purple to-brand-pink text-white font-extrabold text-xs shadow-lg flex items-center justify-center gap-1.5 hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50"
-                >
-                  {paymentLoading ? (
-                    <>
-                      <div className="w-3.5 h-3.5 border-2 border-t-white border-white/20 rounded-full animate-spin" />
-                      Paying...
-                    </>
-                  ) : (
-                    <>Confirm Payment</>
-                  )}
-                </button>
-              </div>
-            </form>
-          </motion.div>
-        </div>
-      )}
+      <p className="text-[10px] text-slate-500 font-medium mt-4">
+        Tip: Tap arrows or use your keyboard navigation keys to step through your Wrapped report.
+      </p>
     </div>
   );
 }

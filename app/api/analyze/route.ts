@@ -104,7 +104,7 @@ You MUST output a valid JSON object matching this schema exactly. Do not wrap it
           id: reportId,
           profileType: profileType || "instagram",
           screenshotUrl: url,
-          isUnlocked: false,
+          isUnlocked: true,
           ...result
         };
 
@@ -134,7 +134,7 @@ You MUST output a valid JSON object matching this schema exactly. Do not wrap it
                 greenFlags: report.greenFlags,
                 photoRanking: report.photoRanking, // Prisma supports direct JSON parsing on PostgreSQL
                 glowUpPlan: report.glowUpPlan,
-                isUnlocked: false
+                isUnlocked: true
               }
             });
             console.log(`Report ${report.id} saved in Neon database via Prisma.`);
